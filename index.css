@@ -1,0 +1,17 @@
+#map{
+    display : flex;
+}
+
+.province{
+    fill:#d08888;
+    stroke: black;
+    stroke-width: .3px;
+}
+
+#tooltip {
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 3px;
+    pointer-events: none; /* Prevents the tooltip from interfering with mouse events */
+}
