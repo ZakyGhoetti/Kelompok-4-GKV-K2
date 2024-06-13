@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stunting Bar Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(to bottom right, rgb(27, 27, 27), rgb(147, 147, 147), rgb(0, 0, 0));
+        }
+        #stuntingBarChart {
+            max-width: 700px;
+            max-height: 500px;
+            width: 100%;
+            height: auto;
+            background-color: rgb(0, 0, 0);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: rgb(15, 0, 0);
+            padding: 10px;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            display: none;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h1>Data Stunting 2020-2023 Pada 5 Pulau Besar di Indonesia</h1>
+        <canvas id="stuntingBarChart"></canvas>
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <script>
+        const data = {
+            years: [2020, 2021, 2022, 2023],
+            provinces: {
+                'Jawa': [6.666666667, 6.533333333, 4.583333333, 3.716666667],
+                'Kalimantan': [10.08, 9.06, 8.36, 7.04],
+                'Sulawesi': [8.083333333, 9.633333333, 8.383333333, 6.616666667],
+                'Sumatra': [15.06, 12.63, 12.83, 10.44],
+                'Papua': [14.55, 12.01666667, 9.883333333, 7.716666667]
+            },
+            details: {
+                'Jawa': {
+                    2020: { 'Banten': 17.5, 'DI Yogyakarta': 7.6, 'DKI Jakarta': 2.3, 'Jawa Barat': 3.3, 'Jawa Tengah': 9.2, 'Jawa Timur': 0.1 },
+                    2021: { 'Banten': 15.1, 'DI Yogyakarta': 3, 'DKI Jakarta': 4.4, 'Jawa Barat': 5.9, 'Jawa Tengah': 7.6, 'Jawa Timur': 3.2 },
+                    2022: { 'Banten': 10.3, 'DI Yogyakarta': 4.1, 'DKI Jakarta': 3.1, 'Jawa Barat': 3.9, 'Jawa Tengah': 4.9, 'Jawa Timur': 1.2 },
+                    2023: { 'Banten': 8.8, 'DI Yogyakarta': 3.7, 'DKI Jakarta': 1.8, 'Jawa Barat': 3.2, 'Jawa Tengah': 3.8, 'Jawa Timur': 1 }
+                },
+                'Kalimantan': {
+                    2020: { 'Kalimantan Barat': 9, 'Kalimantan Selatan': 13.1, 'Kalimantan Tengah': 11.9, 'Kalimantan Timur': 11.5, 'Kalimantan Utara': 4.9 },
+                    2021: { 'Kalimantan Barat': 8.3, 'Kalimantan Selatan': 9, 'Kalimantan Tengah': 10.6, 'Kalimantan Timur': 10.7, 'Kalimantan Utara': 6.7 },
+                    2022: { 'Kalimantan Barat': 6.9, 'Kalimantan Selatan': 9.4, 'Kalimantan Tengah': 9.2, 'Kalimantan Timur': 9.5, 'Kalimantan Utara': 6.8 },
+                    2023: { 'Kalimantan Barat': 6.3, 'Kalimantan Selatan': 9.1, 'Kalimantan Tengah': 8.9, 'Kalimantan Timur': 6.9, 'Kalimantan Utara': 4 }
+                },
+                'Sumatra': {
+                    2020: { 'Aceh': 13.4, 'Bengkulu': 7.7, 'Jambi': 5.3, 'Kepulauan Bangka Belitung': 9.4, 'Kepulauan Riau': 20.2, 'Lampung': 26.3, 'Sumatera Barat': 11.3, 'Sumatera Selatan': 16.6, 'Sumatera Utara': 17.7, 'Riau': 22.7 },
+                    2021: { 'Aceh': 12.1, 'Bengkulu': 6, 'Jambi': 6.1, 'Kepulauan Bangka Belitung': 5, 'Kepulauan Riau': 21.7, 'Lampung': 22.6, 'Sumatera Barat': 13.1, 'Sumatera Selatan': 6.6, 'Sumatera Utara': 13.8, 'Riau': 19.3 },
+                    2022: { 'Aceh': 8, 'Bengkulu': 4.2, 'Jambi': 4.5, 'Kepulauan Bangka Belitung': 4.5, 'Kepulauan Riau': 18.5, 'Lampung': 22.4, 'Sumatera Barat': 16.5, 'Sumatera Selatan': 13.4, 'Sumatera Utara': 13.2, 'Riau': 23.1 },
+                    2023: { 'Aceh': 7.5, 'Bengkulu': 3, 'Jambi': 3.9, 'Kepulauan Bangka Belitung': 3.2, 'Kepulauan Riau': 15.8, 'Lampung': 17.4, 'Sumatera Barat': 13.7, 'Sumatera Selatan': 9.7, 'Sumatera Utara': 7, 'Riau': 23.2 }
+                },
+                'Sulawesi': {
+                    2020: { 'Gorontalo': 8.3, 'Sulawesi Barat': 8.3, 'Sulawesi Selatan': 9.3, 'Sulawesi Tengah': 12, 'Sulawesi Tenggara': 4.7, 'Sulawesi Utara': 5.9 },
+                    2021: { 'Gorontalo': 6.3, 'Sulawesi Barat': 6.8, 'Sulawesi Selatan': 13, 'Sulawesi Tengah': 12.8, 'Sulawesi Tenggara': 11.4, 'Sulawesi Utara': 7.5 },
+                    2022: { 'Gorontalo': 4.8, 'Sulawesi Barat': 9.9, 'Sulawesi Selatan': 12.3, 'Sulawesi Tengah': 11.9, 'Sulawesi Tenggara': 9.1, 'Sulawesi Utara': 2.3 },
+                    2023: { 'Gorontalo': 4.5, 'Sulawesi Barat': 5.2, 'Sulawesi Selatan': 6.8, 'Sulawesi Tengah': 10.9, 'Sulawesi Tenggara': 10.9, 'Sulawesi Utara': 1.4 }
+                },
+                'Papua': {
+                    2020: { 'Papua': 28.7, 'Papua Barat': 5.3, 'Papua Barat Daya': 13.7, 'Papua Pegunungan': 11.9, 'Papua Selatan': 16.7, 'Papua Tengah': 11 },
+                    2021: { 'Papua': 18.5, 'Papua Barat': 3, 'Papua Barat Daya': 13.2, 'Papua Pegunungan': 10.4, 'Papua Selatan': 18.5, 'Papua Tengah': 8.5 },
+                    2022: { 'Papua': 16.4, 'Papua Barat': 2.3, 'Papua Barat Daya': 13.1, 'Papua Pegunungan': 9, 'Papua Selatan': 11, 'Papua Tengah': 7.5 },
+                    2023: { 'Papua': 8.9, 'Papua Barat': 2.4, 'Papua Barat Daya': 11.3, 'Papua Pegunungan': 8.2, 'Papua Selatan': 10.3, 'Papua Tengah': 5.2 }
+                }
+            }
+        };
+        const labels = data.years;
+        const datasets = Object.keys(data.provinces).map((province, index) => {
+            const colors = [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(153, 102, 255, 0.5)'
+            ];
+            return {
+                label: province,
+                backgroundColor: colors[index],
+                borderColor: colors[index].replace('0.5', '1'),
+                borderWidth: 1,
+                data: data.provinces[province]
+            };
+        });
+
+        const config = {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Stunting'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tahun'
+                        }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const element = elements[0];
+                        const dataset = config.data.datasets[element.datasetIndex];
+                        const year = config.data.labels[element.index];
+                        const province = dataset.label;
+                        const value = dataset.data[element.index];
+
+                        // Get detailed data for the selected island and year
+                        const details = data.details[province][year];
+                        let detailsHTML = `Provinsi: ${province}<br>Tahun: ${year}<br>Jumlah Stunting: ${value}<br><br>Detail:<br>`;
+                        for (const [key, val] of Object.entries(details)) {
+                            detailsHTML += `${key}: ${val}<br>`;
+                        }
+
+                        const tooltip = document.getElementById('tooltip');
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = `${event.clientX + 10}px`;
+                        tooltip.style.top = `${event.clientY + 10}px`;
+                        tooltip.innerHTML = detailsHTML;
+                    }
+                }
+            }
+        };
+
+        // Mendapatkan elemen canvas
+        const ctx = document.getElementById('stuntingBarChart').getContext('2d');
+
+        // Membuat instance objek Chart dan menggambar bar chart
+        const stuntingBarChart = new Chart(ctx, config);
+
+        // Hide tooltip on mouse out
+        document.getElementById('stuntingBarChart').addEventListener('mouseout', () => {
+            document.getElementById('tooltip').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
