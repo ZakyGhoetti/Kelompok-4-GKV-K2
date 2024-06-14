@@ -102,10 +102,12 @@ Promise.all([
         return div.style("opacity", 0);
       })
       .on("mouseout", mouseout);
-});
-updateMapColors();
 
-function setYear(year) {
-    selectedyear = year;
-    updateMapColors();
-}
+
+      updateMapColors();
+
+      function setYear(year) {
+          selectedyear = year;
+          updateMapColors();
+      }
+});
