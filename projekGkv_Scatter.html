@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stunting Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(to bottom right, rgb(27, 27, 27), rgb(147, 147, 147), rgb(0, 0, 0));
+        }
+        #stuntingScatterChart {
+            max-width: 700px;
+            max-height: 500px;
+            width: 100%;
+            height: auto;
+            background-color: rgb(0, 0, 0);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: rgb(15, 0, 0);
+            padding: 10px;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            display: none;
+            pointer-events: none;
+        }
+        .button-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .button-container button {
+            margin-right: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 15px; /* Updated border-radius */
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="location.href='projekGkv.html'">Bar Chart</button>
+        <button onclick="location.href='index.html'">Map</button>
+    </div>
+    <div class="chart-container">
+        <h1>Data Stunting 2020-2023 Pada 5 Pulau Besar di Indonesia</h1>
+        <canvas id="stuntingScatterChart"></canvas>
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <script>
+        const data = {
+            years: [2020, 2021, 2022, 2023],
+            averages: [12.12631579, 10.56315789, 9.523684211, 7.865789474],
+            provinces: {
+                'Jawa': [6.666666667, 6.533333333, 4.583333333, 3.716666667],
+                'Kalimantan': [10.08, 9.06, 8.36, 7.04],
+                'Sulawesi': [8.083333333, 9.633333333, 8.383333333, 6.616666667],
+                'Sumatra': [15.06, 12.63, 12.83, 10.44],
+                'Papua': [14.55, 12.01666667, 9.883333333, 7.716666667]
+            }
+        };
+
+        const labels = data.years;
+        const datasets = [{
+            label: 'Rata-rata Stunting',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            data: data.years.map((year, idx) => ({ x: year, y: data.averages[idx] })),
+            showLine: true,
+            fill: false
+        }];
+
+        const config = {
+            type: 'scatter',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Stunting'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tahun'
+                        },
+                        type: 'linear',
+                        position: 'bottom',
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value, index, values) {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const element = elements[0];
+                        const dataset = config.data.datasets[element.datasetIndex];
+                        const year = dataset.data[element.index].x;
+                        const value = dataset.data[element.index].y;
+
+                        // Get detailed average data for the selected year
+                        const provinceAverages = Object.keys(data.provinces).map(province => {
+                            return `${province}: ${data.provinces[province][year - 2020].toFixed(2)}`;
+                        }).join('<br>');
+
+                        let detailsHTML = `Tahun: ${year}<br>Jumlah Stunting: ${value.toFixed(2)}<br><br>Rataan per Pulau:<br>${provinceAverages}`;
+
+                        const tooltip = document.getElementById('tooltip');
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = `${event.clientX + 10}px`;
+                        tooltip.style.top = `${event.clientY + 10}px`;
+                        tooltip.innerHTML = detailsHTML;
+                    }
+                }
+            }
+        };
+
+        // Mendapatkan elemen canvas
+        const ctx = document.getElementById('stuntingScatterChart').getContext('2d');
+
+        // Membuat instance objek Chart dan menggambar scatter plot
+        const stuntingScatterChart = new Chart(ctx, config);
+
+        // Hide tooltip on mouse out
+        document.getElementById('stuntingScatterChart').addEventListener('mouseout', () => {
+            document.getElementById('tooltip').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

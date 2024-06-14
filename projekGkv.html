@@ -34,9 +34,27 @@
             display: none;
             pointer-events: none;
         }
+        .button-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .button-container button {
+            margin-right: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 15px; /* Updated border-radius */
+        }
     </style>
 </head>
 <body>
+    <div class="button-container">
+        <button onclick="location.href='projekGkv_Scatter.html'">Line Chart</button>
+        <button onclick="location.href='index.html'">Map</button>
+    </div>
     <div class="chart-container">
         <h1>Data Stunting 2020-2023 Pada 5 Pulau Besar di Indonesia</h1>
         <canvas id="stuntingBarChart"></canvas>

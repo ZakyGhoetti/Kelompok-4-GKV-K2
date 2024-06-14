@@ -5,8 +5,16 @@
 
 </head>   
 <body>
+<div id="container">
+    <div id="barchart-container">
+        <div id="barchart"></div>
+    </div>
     <div>
-        <h1 id="judul">Data Stunting Indonesia 2020</h1>
+        <h1 id="judul">Data Stunting Indonesia (2020)</h1>
+    </div>
+    <div id="buttons-page">
+        <button onclick="window.location.href='projekGkv_Scatter.html'">Line Chart</button>
+        <button onclick="window.location.href='projekGkv.html'">Bar Chart</button>
     </div>
     <div id="controls">
         <button onclick="setYear('2020')">2020</button>
@@ -31,12 +39,12 @@
             <div class="color-box" style="background-color: #2068c1;"></div><p>32+</p>
         </div>
     </div>
-    <div id="map"></div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
     <div id="tooltip" style="position: absolute; opacity: 0;"></div>
-    <div id="detail"><br></div>
-    <div>
-        <script src="https://d3js.org/d3.v5.min.js"></script>
+</div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
         <script src="https://d3js.org/topojson.v1.min.js"></script>
         <script src="index.js"></script>
-    </div>
 </body>

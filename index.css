@@ -1,9 +1,34 @@
+body{
+    background-image: linear-gradient(to bottom right, rgb(27, 27, 27), rgb(147, 147, 147), rgb(0, 0, 0));
+}
+
 h1{
     text-align: center;
 }
 
-#controls {
+#buttons-page {
+    display: flex;
+    justify-content: center;
     margin-bottom: 10px;
+}
+
+#buttons-page button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 7px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#buttons-page button:hover {
+    background-color: #45a049;
+}
+
+#controls {
+    margin-bottom: 5px;
 }
 
 #controls button {
@@ -12,22 +37,31 @@ h1{
     font-size: 14px;
 }
 
-#map{
-    display : flex;
-    height: 500px;
+#map-container {
+    background: rgb(37, 35, 35);
+    width: 100%;
+    overflow-x: auto;  /* Enables horizontal scrolling */
 }
 
+#map {
+    width: 1235px;  /* Set a fixed width to the map */
+    height: 450px; /* Adjust as necessary */
+    margin: 20px 0;
+}
 #legends {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin-top: 10px;
+    padding-left: 20px;
+    width: 400px;
+    background-color: rgb(234, 234, 234);
 }
 
 .legend-item {
     display: flex;
     align-items: center;
     margin-right: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .color-box {
@@ -48,4 +82,24 @@ h1{
     padding: 5px;
     border-radius: 3px;
     pointer-events: none;
+}
+
+#barchart-container {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: auto;
+    width: 321.33px;
+    top: 90px;
+    right: 10px;
+    background: rgb(255, 255, 255);
+    color:black;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+#barchart {
+    width: 300px; /* Adjust as necessary */
+    height: 200px; /* Adjust as necessary */
 }
