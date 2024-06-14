@@ -5,7 +5,7 @@ let selectedyear = '2020'
 
 const svg = d3.select('#map').append('svg').attr('width', width).attr('height', height);
 
-const projection = d3.geoMercator().scale(1300).center([120, -5]).translate([width / 1.8, height / 3]);
+const projection = d3.geoMercator().scale(1300).center([120, -7]).translate([width / 1.8, height / 3]);
 const path = d3.geoPath().projection(projection);
 
 const div = d3.select("#tooltip");
@@ -90,16 +90,16 @@ function updateMapColors() {
           return "#bad0e6";
       }
       else if(dat >= 8 && dat < 16){
-          return "#84b0d9";
+          return "#95c0e8";
       }
       else if(dat >= 16 && dat < 24){
-          return "#6ba2d6";
+          return "#5695cf";
       }
       else if(dat >= 24 && dat < 32){
-          return "#4fafe8";
+          return "#3882dd";
       }
       else{
-          return "#3182bd";
+          return "#2068c1";
       }
   });
 }

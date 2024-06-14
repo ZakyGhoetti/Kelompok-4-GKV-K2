@@ -14,6 +14,27 @@ h1{
 
 #map{
     display : flex;
+    height: 500px;
+}
+
+#legends {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
 }
 
 .province{
