@@ -2,12 +2,22 @@ h1{
     text-align: center;
 }
 
+#controls {
+    margin-bottom: 10px;
+}
+
+#controls button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
 #map{
     display : flex;
 }
 
 .province{
-    fill:#d08888;
+    fill:aquamarine;
     stroke: black;
     stroke-width: .3px;
 }
