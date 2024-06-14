@@ -1,5 +1,6 @@
 const width = 1200
 const height = 1000
+const csvDataDict = {};
 let selectedyear = '2020'
 
 const svg = d3.select('#map').append('svg').attr('width', width).attr('height', height);
@@ -9,9 +10,7 @@ const path = d3.geoPath().projection(projection);
 
 const div = d3.select("#tooltip");
 
-const colorScale = d3.scaleThreshold()
-    .domain([8, 16, 24, 32]) 
-    .range(["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"]);
+let indo;
 
 Promise.all([
     d3.json('provinces-simplified-topo.json'),
@@ -21,7 +20,6 @@ Promise.all([
     const [provincesData, stuntingData] = data;
     const provinces = topojson.feature(provincesData, provincesData.objects.provinces).features;
     
-    const csvDataDict = {};
     stuntingData.forEach(row => {
         csvDataDict[row.Provinsi] = row;
     });
@@ -46,29 +44,7 @@ Promise.all([
         div.style("opacity", 0);
     }
 
-    function updateMapColors() {
-        indo.attr("fill", d => {
-            const provinceName = d.properties.provinsi;
-            const additionalInfo = csvDataDict[provinceName];
-            if(additionalInfo[selectedyear] >= 0 && additionalInfo[selectedyear] < 8){
-                return "#f7fbff";
-            }
-            else if(additionalInfo[selectedyear] >= 8 && additionalInfo[selectedyear] < 16){
-                return "#deebf7";
-            }
-            else if(additionalInfo[selectedyear] >= 16 && additionalInfo[selectedyear] < 24){
-                return "#c6dbef";
-            }
-            else if(additionalInfo[selectedyear] >= 24 && additionalInfo[selectedyear] < 32){
-                return "#6baed6";
-            }
-            else{
-                return "#3182bd";
-            }
-        });
-    }
-
-    var indo = svg.selectAll('path')
+    indo = svg.selectAll('path')
     .data(provinces)
     .enter().append('path')
     .attr('class', 'province')
@@ -103,7 +79,37 @@ Promise.all([
 
 });
 
+function updateMapColors() {
+  indo.style("fill", d => {
+      const provinceName = d.properties.provinsi;
+      const additionalInfo = csvDataDict[provinceName];
+      const dat = parseFloat(additionalInfo[selectedyear]);
+      console.log(selectedyear);
+      console.log(provinceName + " " + dat);
+      if(dat >= 0 && dat < 8){
+          return "#bad0e6";
+      }
+      else if(dat >= 8 && dat < 16){
+          return "#84b0d9";
+      }
+      else if(dat >= 16 && dat < 24){
+          return "#6ba2d6";
+      }
+      else if(dat >= 24 && dat < 32){
+          return "#4fafe8";
+      }
+      else{
+          return "#3182bd";
+      }
+  });
+}
+
 function setYear(year) {
     selectedyear = year;
-    updateMapColors();
+    d3.select('#judul').text("Data Stunting Indonesia " + selectedyear);
+    if (typeof updateMapColors === "function") {
+      updateMapColors(); // Call the update function
+  } else {
+      console.log("updateMapColors is not defined");
+  }
 }
