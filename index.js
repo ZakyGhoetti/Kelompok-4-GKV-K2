@@ -25,23 +25,6 @@ Promise.all([
     stuntingData.forEach(row => {
         csvDataDict[row.Provinsi] = row;
     });
-    
-    function chooseColor(d, tahun){
-        const provinceName = d.properties.provinsi;
-        const additionalInfo = csvDataDict[provinceName];
-        if(additionalInfo[tahun] >= 0 && additionalInfo[tahun] < 8){
-
-        }
-        else if(additionalInfo[tahun] >= 8 && additionalInfo[tahun] < 16){
-
-        }
-        else if(additionalInfo[tahun] >= 16 && additionalInfo[tahun] < 24){
-
-        }
-        else if(additionalInfo[tahun] >= 24 && additionalInfo[tahun] < 32){
-
-        }
-    }
 
     function mouseover(d) {
         d3.select(this)
@@ -67,8 +50,20 @@ Promise.all([
         indo.attr("fill", d => {
             const provinceName = d.properties.provinsi;
             const additionalInfo = csvDataDict[provinceName];
-            if (additionalInfo) {
-                return colorScale(+additionalInfo[selectedYear]);
+            if(additionalInfo[selectedyear] >= 0 && additionalInfo[selectedyear] < 8){
+                return "#f7fbff";
+            }
+            else if(additionalInfo[selectedyear] >= 8 && additionalInfo[selectedyear] < 16){
+                return "#deebf7";
+            }
+            else if(additionalInfo[selectedyear] >= 16 && additionalInfo[selectedyear] < 24){
+                return "#c6dbef";
+            }
+            else if(additionalInfo[selectedyear] >= 24 && additionalInfo[selectedyear] < 32){
+                return "#6baed6";
+            }
+            else{
+                return "#3182bd";
             }
         });
     }
@@ -106,8 +101,9 @@ Promise.all([
 
       updateMapColors();
 
-      function setYear(year) {
-          selectedyear = year;
-          updateMapColors();
-      }
 });
+
+function setYear(year) {
+    selectedyear = year;
+    updateMapColors();
+}
